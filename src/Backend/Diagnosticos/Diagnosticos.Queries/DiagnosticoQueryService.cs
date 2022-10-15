@@ -13,7 +13,8 @@ namespace Diagnosticos.Queries
     public interface IDiagnosticoQueryService
     {
         Task<DataCollection<DiagnosticoDto>> GetAllAsync(int? paciente_Id, int page, int take);
-        Task<DataCollection<EnfermedadDiagnosticoDto>> GetAllEnfermedadesAsync(int? paciente_Id, int page, int take);
+        Task<DataCollection<EnfermedadDiagnosticoDto>> GetAllEnfermedadesDiagnosticadasAsync(int? paciente_Id, int page, int take);
+        Task<DataCollection<EnfermedadDto>> GetAllEnfermedadesAsync(int page, int take);
         Task<DiagnosticoDto> GetAsync(int id);
         Task<ResultadoDiagnosticoDto> GetResultadoAsync(int id);
         Task<DataCollection<EspecialidadDto>> GetAllEspecialidadesAsync(int page, int take);
@@ -42,7 +43,7 @@ namespace Diagnosticos.Queries
             return collection.Adapt<DataCollection<DiagnosticoDto>>();
         }
 
-        public async Task<DataCollection<EnfermedadDiagnosticoDto>> GetAllEnfermedadesAsync(int? paciente_Id, int page, int take)
+        public async Task<DataCollection<EnfermedadDiagnosticoDto>> GetAllEnfermedadesDiagnosticadasAsync(int? paciente_Id, int page, int take)
         {
             var collection = await _context.Diagnosticos
                 .Include(x => x.PosiblesEnfermedades)
@@ -69,6 +70,15 @@ namespace Diagnosticos.Queries
             }).ToList();
 
             return diagnosticos;
+        }
+        
+        public async Task<DataCollection<EnfermedadDto>> GetAllEnfermedadesAsync(int page, int take)
+        {
+            var collection = await _context.Enfermedades
+                .OrderByDescending(x => x.Id)
+                .GetPagedAsync(page, take);
+
+            return collection.Adapt<DataCollection<EnfermedadDto>>();
         }
 
         public async Task<DataCollection<EspecialidadDto>> GetAllEspecialidadesAsync(int page, int take)
@@ -148,5 +158,5 @@ namespace Diagnosticos.Queries
 
             return diagnosticoDto;
         }
-    }
+  }
 }

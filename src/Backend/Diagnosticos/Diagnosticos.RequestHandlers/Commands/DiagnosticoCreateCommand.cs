@@ -1,11 +1,11 @@
-﻿using Diagnosticos.Domain;
+﻿using Diagnosticos.RequestHandlers.Responses;
 using MediatR;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Diagnosticos.RequestHandlers.Commands
 {
-    public class DiagnosticoCreateCommand : IRequest<Diagnostico>, IDiagnosticoCommand
+    public class DiagnosticoCreateCommand : IRequest<DiagnosticoDto>, IDiagnosticoCommand
     {
         [Required]
         public int Paciente_Id { get; set; }

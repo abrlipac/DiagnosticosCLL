@@ -10,7 +10,6 @@ using System;
 using Common.Result;
 using Diagnosticos.RequestHandlers.Commands;
 using Diagnosticos.RequestHandlers.Exceptions;
-using Diagnosticos.Domain;
 
 namespace Diagnosticos.Api.Controllers
 {
@@ -36,10 +35,16 @@ namespace Diagnosticos.Api.Controllers
             return await _diagnosticoQueryService.GetAllAsync(paciente, page, take);
         }
 
-        [HttpGet("enfermedades")]
-        public async Task<DataCollection<EnfermedadDiagnosticoDto>> GetAllEnfermedades(int? paciente, int page = 1, int take = 10)
+        [HttpGet("enfermedadesDiagnosticadas")]
+        public async Task<DataCollection<EnfermedadDiagnosticoDto>> GetAllEnfermedadesDiagnosticadas(int? paciente, int page = 1, int take = 10)
         {
-            return await _diagnosticoQueryService.GetAllEnfermedadesAsync(paciente, page, take);
+            return await _diagnosticoQueryService.GetAllEnfermedadesDiagnosticadasAsync(paciente, page, take);
+        }
+
+        [HttpGet("enfermedades")]
+        public async Task<DataCollection<EnfermedadDto>> GetAllEnfermedades(int page = 1, int take = 10)
+        {
+            return await _diagnosticoQueryService.GetAllEnfermedadesAsync(page, take);
         }
 
         [HttpGet("especialidades")]

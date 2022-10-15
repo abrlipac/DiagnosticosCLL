@@ -2,6 +2,7 @@
 using Diagnosticos.Persistence.Database;
 using Diagnosticos.RequestHandlers.Commands;
 using Diagnosticos.RequestHandlers.Exceptions;
+using Diagnosticos.RequestHandlers.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 namespace Diagnosticos.RequestHandlers
 {
     public class DiagnosticoRequestHandler :
-        IRequestHandler<DiagnosticoCreateCommand, Diagnostico>,
+        IRequestHandler<DiagnosticoCreateCommand, DiagnosticoDto>,
         INotificationHandler<DiagnosticoUpdateCommand>
     {
         private readonly ApplicationDbContext Context;
@@ -42,7 +43,7 @@ namespace Diagnosticos.RequestHandlers
         /// <param name="DiagnosticoCreateCommand">Este es el comando que se está manejando.</param> 
         /// <param name="CancellationToken">Este es un token que se puede utilizar para cancelarla 
         /// operación.</param> 
-    public async Task<Diagnostico> Handle(DiagnosticoCreateCommand request, CancellationToken cancellationToken)
+    public async Task<DiagnosticoDto> Handle(DiagnosticoCreateCommand request, CancellationToken cancellationToken)
     {
       Logger.LogInformation("! Empezó la creación de un nuevo diagnóstico");
             var entry = new Diagnostico();
@@ -54,18 +55,24 @@ namespace Diagnosticos.RequestHandlers
 
                 Logger.LogInformation("! Guardando el diagnóstico");
 
-                var diagnostico = await Context.AddAsync(entry, cancellationToken);
+                await Context.AddAsync(entry, cancellationToken);
                 await Context.SaveChangesAsync(cancellationToken);
 
                 Logger.LogInformation($"! El diagnóstico ha sido creado");
 
                 await transaction.CommitAsync(cancellationToken);
-
-                // return diagnostico.CurrentValues.GetValue<int>("Id");
             }
             Logger.LogInformation("! Terminó la creación de un nuevo diagnóstico");
 
-            return entry;
+            return new DiagnosticoDto {
+                Id = entry.Id,
+                Especialidad_Id = entry.Especialidad_Id,
+                Fecha = entry.Fecha,
+                PosiblesEnfermedades = entry.PosiblesEnfermedades.Select(pe => new PosibleEnfermedadDto {
+                    Enfermedad_Id = pe.Enfermedad_Id,
+                    Porcentaje = pe.Porcentaje
+                }).ToList()
+            };
     }
 
         public async Task Handle(DiagnosticoUpdateCommand notification, CancellationToken cancellationToken)
@@ -157,7 +164,7 @@ namespace Diagnosticos.RequestHandlers
             if (notification is DiagnosticoCreateCommand createCommand)
             {
                 // Si el comando es de creación de diagnóstico 
-                entry.Fecha = DateTime.UtcNow;
+                entry.Fecha = DateTime.Now;
                 entry.Paciente_Id = createCommand.Paciente_Id;
                 entry.Especialidad_Id = createCommand.Especialidad_Id;
             }

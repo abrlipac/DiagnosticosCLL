@@ -7,3 +7,10 @@ export const userStore = writable({
   profile: '/img/user.png',
   role: 'Paciente',
 })
+
+export const diagnosticoStore = writable({
+  id: 1,
+  especialidad: 'General',
+  fecha: new Date(),
+  posiblesEnfermedades: []
+})

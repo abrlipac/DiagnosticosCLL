@@ -1,5 +1,5 @@
 <script>
-  import Resultado from '../../../../components/Resultado.svelte'
+  import Resultado from '../../../components/Resultado.svelte'
 </script>
 
 <h1 class="text-center mt-4">Resultado de diagnóstico</h1>
