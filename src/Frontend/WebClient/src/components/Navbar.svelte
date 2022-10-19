@@ -10,7 +10,7 @@
       Diagnósticos: [
         { 'Generar diagnóstico': '/diagnosticos/nuevo' },
         { 'Editar síntomas de diagnóstico': '/diagnosticos/editar' },
-        { 'Visualizar diagnósticos': '/diagnosticos' },
+        { 'Visualizar diagnósticos': '/diagnosticos/paciente' },
       ],
     },
     {

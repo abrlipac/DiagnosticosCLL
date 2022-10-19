@@ -4,7 +4,7 @@
 </script>
 
 <Navbar />
-<div class="container" style="height: calc(100vh - 3.5rem - 1px)">
+<div class="container" style="min-height: calc(100vh - 3.5rem - 1px)">
 	<slot></slot>
 </div>
 <Footer />
