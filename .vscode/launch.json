@@ -5,13 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "npm run dev -- --open",
-      "name": "Sveltekit Launch (WebClient)",
-      "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceFolder}/src/Frontend/WebClient"
-    },
-    {
       "name": ".NET Launch (Identity Api)",
       "type": "coreclr",
       "request": "launch",
@@ -54,21 +47,4 @@
       }
     }
   ],
-  "compounds": [
-    {
-      "name": "Backend Launch",
-      "configurations": [
-        ".NET Launch (Diagnosticos Api)",
-        ".NET Launch (Identity Api)"
-      ]
-    },
-    {
-      "name": "Backend & Frontend Launch",
-      "configurations": [
-        "Sveltekit Launch (WebClient)",
-        ".NET Launch (Diagnosticos Api)",
-        ".NET Launch (Identity Api)"
-      ]
-    }
-  ]
 }
